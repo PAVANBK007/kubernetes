@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-with-pv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-with-pv
+  template:
+    metadata:
+      labels:
+        app: app-with-pv
+    spec:
+      containers:
+        - name: app-with-pv
+          image: nginx:latest
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html
+              name: app-storage
+          resources:
+            requests:
+             memory: "128Mi"
+             cpu: "250m"
+            limits:
+             memory: "256Mi"
+             cpu: "500m"
+      volumes:
+        - name: app-storage
+          persistentVolumeClaim:
+            claimName: app-pvc
