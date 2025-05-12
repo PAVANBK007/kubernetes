@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: deployment-service
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/PAVANBK007/kubernetes.git'
+    targetRevision: HEAD
+    path: 'deployment-service'  # Path to the folder containing deployment and service files
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: myapp  # The namespace to deploy into
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
